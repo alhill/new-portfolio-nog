@@ -1,0 +1,25 @@
+backend:
+  name: github
+  repo: alhill/new-portfolio-nog,
+  branch: main
+
+media_folder: "public/images"
+public_folder: "/images"
+
+collections:
+  - name: "entrada"
+    label: "Entradas"
+    folder: "src/content/entrada"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Plantilla", name: "plantilla", widget: "hidden", default: "blog" }
+      - { label: "Título", name: "titulo", widget: "string" }
+      - { label: "Descripción", name: "descripcion", widget: "string" }
+      - { label: "Miniatura", name: "miniatura", widget: "image" }
+      - { label: "Cliente", name: "cliente", widget: "string" }
+      - { label: "Campaña", name: "campaña", widget: "string" }
+      - { label: "Agencia", name: "agencia", widget: "string" }
+      - { label: "Papel", name: "papel", widget: "string" }
+      - { label: "Fecha", name: "fecha", widget: "datetime" }
+      - { label: "Body", name: "body", widget: "markdown" }
