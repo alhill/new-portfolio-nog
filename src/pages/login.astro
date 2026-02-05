@@ -3,6 +3,7 @@ import Layout from '../layouts/Layout.astro';
 ---
 
 <Layout>
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js" is:inline></script>
   <main class="auth">
     <h1>Acceso</h1>
     <p>Inicia sesión o recupera la contraseña.</p>
@@ -13,26 +14,37 @@ import Layout from '../layouts/Layout.astro';
   </main>
 
   <script is:inline>
-    if (window.netlifyIdentity) {
-      window.netlifyIdentity.on('init', (user) => {
-        if (user) {
-          window.location.href = '/admin/';
+    (function() {
+      function initIdentity() {
+        if (!window.netlifyIdentity) {
+          setTimeout(initIdentity, 50);
+          return;
         }
-      });
 
-      document.getElementById('login')?.addEventListener('click', () => {
-        window.netlifyIdentity.open('login');
-      });
+        window.netlifyIdentity.on('init', function(user) {
+          if (user) {
+            window.location.href = '/admin/';
+          }
+        });
 
-      document.getElementById('recovery')?.addEventListener('click', () => {
-        window.netlifyIdentity.open('recovery');
-      });
+        window.netlifyIdentity.on('login', function(user) {
+          window.location.href = '/admin/';
+        });
 
-      window.netlifyIdentity.init();
-    }
+        document.getElementById('login').addEventListener('click', function() {
+          window.netlifyIdentity.open('login');
+        });
+
+        document.getElementById('recovery').addEventListener('click', function() {
+          window.netlifyIdentity.open('recovery');
+        });
+
+        window.netlifyIdentity.init();
+      }
+
+      initIdentity();
+    })();
   </script>
-
-  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 
   <style>
     .auth {

@@ -3,10 +3,76 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex" />
     <title>Content Manager</title>
+    <style>
+      .loading {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        font-family: system-ui, sans-serif;
+        flex-direction: column;
+        gap: 1rem;
+      }
+      .loading-spinner {
+        width: 40px;
+        height: 40px;
+        border: 3px solid #f3f3f3;
+        border-top: 3px solid #333;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+    </style>
   </head>
   <body>
-    <script src="https://unpkg.com/netlify-identity-widget@1.9.2/build/netlify-identity-widget.js"></script>
-    <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+    <div id="loading" class="loading">
+      <div class="loading-spinner"></div>
+      <p>Verificando autenticación...</p>
+    </div>
+
+    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+    <script>
+      (function() {
+        var loadingEl = document.getElementById('loading');
+
+        function loadCMS() {
+          loadingEl.style.display = 'none';
+          var script = document.createElement('script');
+          script.src = 'https://unpkg.com/decap-cms@^3.1.2/dist/decap-cms.js';
+          document.body.appendChild(script);
+        }
+
+        function redirectToLogin() {
+          window.location.href = '/login';
+        }
+
+        if (window.netlifyIdentity) {
+          window.netlifyIdentity.on('init', function(user) {
+            if (!user) {
+              redirectToLogin();
+            } else {
+              loadCMS();
+            }
+          });
+
+          window.netlifyIdentity.on('login', function(user) {
+            loadCMS();
+          });
+
+          window.netlifyIdentity.on('logout', function() {
+            redirectToLogin();
+          });
+
+          window.netlifyIdentity.init();
+        } else {
+          loadingEl.innerHTML = '<p>Error cargando el widget de autenticación</p>';
+        }
+      })();
+    </script>
   </body>
 </html>
