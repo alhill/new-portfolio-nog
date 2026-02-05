@@ -1,0 +1,23 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import identityScript from '../../scripts/identity.js?url';
+---
+
+<Layout>
+  <main class="auth">
+    <h1>Invitación</h1>
+    <p>Si has recibido un enlace de invitación, pégalo completo en la barra de direcciones.</p>
+    <p>El formulario de registro debería abrirse automáticamente.</p>
+  </main>
+
+  <style>
+    .auth {
+      max-width: 640px;
+      margin: 4rem auto;
+      padding: 2rem;
+      text-align: center;
+    }
+  </style>
+
+  <script type="module" src={identityScript}></script>
+</Layout>

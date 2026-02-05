@@ -1,6 +1,5 @@
 backend:
-  name: github
-  repo: alhill/new-portfolio-nog,
+  name: git-gateway
   branch: main
 
 media_folder: "public/images"
