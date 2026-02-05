@@ -4,3 +4,19 @@
 
 [build.environment]
   NODE_VERSION = "20"
+
+# Protect admin routes with Netlify Identity
+# Users without a valid JWT will be redirected to login
+[[redirects]]
+  from = "/admin/*"
+  to = "/admin/:splat"
+  status = 200
+  force = false
+  conditions = {Role = ["admin"]}
+
+# Redirect unauthenticated users to login page
+[[redirects]]
+  from = "/admin/*"
+  to = "/login"
+  status = 302
+  force = false
